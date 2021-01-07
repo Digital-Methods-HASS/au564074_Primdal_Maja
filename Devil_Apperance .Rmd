@@ -1,0 +1,232 @@
+---
+title: "Devil apprerances and torture in Witchproccess in Scotland"
+author: "Maja Primdal Holst Sørensen" 
+date: "01/08/2021"
+output:
+  html_document: default
+  word_document: default
+  pdf_document: default
+---
+## Studienummer: 
+
+201606895 
+
+## Abstract
+
+This Project is about tries to visualize data about witchcraft in Scotland in the 16-hundreds. Three different datasets were used in this project. One about Devil appearances in witch trials. One about Demonic pacts and how they were made, and one about torture types on alleged witches. The visualizations are made I RStudio, and the format is R Markdown. The dataset used in this project is made available through the University of Edinburg. 
+
+## Keywords 
+ 
+1. Witch 
+2. Devil 
+3. Scotland
+ 
+## introduction 
+
+In the middle ages Christianity was the dominating religion. The goal for the people was to get into heaven after death, and therefore it was important to live a dutiful life without sin. If you did not live your life after the teachings of the bible, you would end up in hell for eternal damnation. During the later middle ages, a demonological component was added to the existing ideas about witches ^[McKay. A history of Western society, 431.]. After the reformation an expansion in the number of witch trials was seen, and the essence in witch trials was that the witch had made a pact with the Devil. This pact bound the witch to the Devil and was therefore required to do his bidding ^[McKay. A history of Western society, 431.]. Now witches were no longer people who simply used magic to get what they wanted and do harm; they were people used by the Devil to do what he wanted . Men and Women whom were accused of witchcraft was persecuted and brought before a court and tried. If found guilty, they would often be burned at the stake. Especially Scotland was an area which suffered severe persecution. The witch trials in Europe was a Historical phenomenon, taking place within a certain timeframe. In this Project I will focus on the witch trials in Scotland in the 16-hundreds. I will visualize some data from a database about witch trials in Scotland in the 16-hundreds made available through the University of Edenborough. I will try to visualize the data, to help a better understanding. Many people lost their life due to being accused of witchcraft and to understand why, we have to understand more about the beliefs and superstitions of the time. I have therefore focused on Devil and demon appearances at witch trials to see which forms they would manifest in. 
+	People accused of witchcraft could also, as a part of the trial, be submitted to torture to get them to confess to be a witch. To better understand the suffering these men and women underwent I have tried to visualize the amount of certain torture types being used, and to see if some torture methods were used more in some years than others. 
+
+
+## Problems and bagground
+
+The datasets that I will be using in this paper consist of a plethora of different information in table form. To understand it better, it must be processed to be more readable and easier to comprehend. Therefore, I have selected some of the datasheets I found interesting and I have tried to visualize them, so that this data won’t be lost or not understood. Witch trials is a dark moment in history, and even tough men could get accused of witchcraft, the majority of the accused were women. Women was seen as weaker than men, and thus more likely to succumb to the will of the Devil ^[McKay. A history of Western society, 431.]. Therefore, the widespread misogyny of the time, was a huge contributor to the torture and death of thousands of women all over Europe during the widespread witch trials. By visualizing some of the data by the help of Rstudio, I hope to spread an understanding of how religious superstitions can be very damaging and to show the consequences of said superstition.  This is not a new field of studying, and some brilliant historians have dedicated their work to the subject of witch trials: 
+	Liv Helene Willumsen, professor emerita in history, has written the book, Witches of the North. Scotland and Finnmark, which is a comparative study of the witch persecution in the two regions in the 16-hundreds. She writes about the trials, by analyzing trial documents and tries to make every voice of the trial clear ^[ Liv Helene Willumsen. Witches of the North: Scotland and Findmark. Leiden: Brill, 2013.] . 
+	Julian Goodare is professor of history at the University of Edinburgh is one of the authors of the datasets used in this paper. Goodare is also the author of the article Women and the witch-hunt in Scotland. Goodland focuses on the fact that the majority of witches prosecuted were women ^[ Julian Goodare. “Women and the witch-hunt in Scotland”. Social History, Oct., 1998, Vol. 23, No. 3 (Oct., 1998), pp. 288-308 https://www.jstor.org/stable/4286516].
+ 
+# Sofware Framework 
+
+For this project I used RStudio, which is a separate piece of software that works with R, to make it more user-friendly. I used my two-year old MacBook Air with an 1,8 GHz intel Core i5, which runs on macOS Mojave version 10.14.6. I installed the desktop version of R (4.0.3) and R Studio (1.3.1093). I used the package Tidyverse, which is an opinionated collection of R packages designed for data science. I also use the Hmisc package, but it assumes that I have mdb tools, which I then installed via Brew ^[ https://brew.sh/index_da].
+
+```{r message=FALSE} 
+library(tidyverse)
+library(Hmisc)
+```
+
+# Data Acquiition and Processin
+
+This database is available to use trough The University of Edinburgh, School of History, Classics and Archeology. They have a webpage where it is available for use, free of charge. However, the data and database structure are still under copyright of the authors. I have used the way of citation they suggested on the webpage, which is:  
+
+Julian Goodare, Lauren Martin, Joyce Miller and Louise Yeoman, 'The Survey of Scottish Witchcraft', www.shc.ed.ac.uk/witches/ (archived January 2003, accessed December 10th, 2020). 
+
+This is a relational database, which means the data is organized into tables. It uses a structure that allows the user to access and identify data in relation to another piece of data from the database. 
+
+# Implementation and Empirical Results
+
+First, I start with getting the whole witchcraft survey, that I downloaded from the source cited above, in to RStudio. By doing that I created a data frame called Survey, which contains all the different datasets that are a part of the witchcraft survey.
+
+## Deviltype
+```{r}
+Survey <- mdb.get("Witchcraftsurvey_download/Witchcraftsurvey_download.mdb")
+```
+
+Then I extract the Devilappearances dataset from the Survey and create another data frame called Devil, which contains different information about Devil appearances during witch trials. The field refers to the type of non-natural being that was mentioned or described in the documents, which was the basis for this Survey. I focused in the table called Devil.Type, which is data about the different type of Devils that were present at the witch trials. 
+
+```{r}
+Devil <- mdb.get("Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_DevilAppearance")
+```
+
+To visualize the data about the Devil types, I tried to count and sort the different types. To make it into a bar chart I had to assign the number of appearances to the y-axis and the Type to the x- axis. It came to look like this: 
+
+```{r}
+Devil %>% 
+  count(Devil.Type, sort = TRUE)
+```
+To make it into a bar chart I had to assign the number of appearances to the y-axis and the Type to the x- axis. It came to look like this: 
+
+```{r}
+Devil %>%
+  count(Devil.Type, sort = TRUE) %>%
+  top_n(16) %>%
+  mutate(Devil.Type = reorder(Devil.Type, n)) %>%
+  ggplot(aes(x = Devil.Type, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+      labs(x = "Type",
+      y = "Number of apperances",
+      title = "Devil apperances")
+```
+Here it clearly shows that the most common type the Devil appeared as, was as a man, with 250 appearances. Animal Devil was the second most common type of Devil with 60 appearances. The third most common was as a female, with 26 appearances. The fact that one of the types is blank means that either there was an error when making the witchcraft survey or that there was a mentioning of a Devil, but not further described in looks which was the case in two trials. All in all there was only 396 Devil appearances out of the 3413 Witch trials in the 16-hundreds Scotland. The reason for the belief of the Devil and all the Demonological aspect. The demonological narrative about the Devil was well-known among the common people ^[Willumsen, Witches of the North: Scotland and Findmark, 353]. 
+
+```{r}
+Case <- mdb.get("Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_Case") 
+```
+
+The code above, does the same as the previous code, which means it create a data frame for the data-set "WBD_Case". I will now do the same with "WDB_DemonicPact. 
+
+```{r}
+Demonic_pact <- mdb.get("Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_DemonicPact")
+```
+## Demon Type 
+
+Here I will try to do the same as above. I will try to organize the Demonic.Type, like I sorted the Devil types above. Here the Demonic type refers to the type or motif of demonic pact that was described in the witchcraft documents. Here the demonological narrative is also clear because, it shows the different ways in which a witch could make a demonic pact with the Devil.  
+
+Like above I started by counting and sorting the table of Demonic.Type. 
+
+```{r}
+Demonic_pact %>% 
+  count(Demonic.Type, sort = TRUE)
+```
+To make it into a bar chart I had to assign the number of pact to the y-axis and the Type to the x- axis. It came to look like this: 
+
+```{r}
+Demonic_pact%>%
+  count(Demonic.Type, sort = TRUE) %>%
+  top_n(16) %>%
+  mutate(Demonic.Type = reorder(Demonic.Type, n)) %>%
+  ggplot(aes(x = Demonic.Type, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+      labs(x = "Type",
+      y = "Number of pacts",
+      title = "Demonic pacts")
+```
+To understand the different types, I have listed the meaning by the top five Types of Demonic pacts.  An Anti-baptism is the renunciation of Christian baptism, also called apostasy. A Devil’s mark is a mark received from the Devil as a sign of a pact and is often described as not sensible to feeling. Sex means that the accused had sexual relations with the Devil. Servant indicates that the accused had agreed to be the servant of the Devil. New name means that a new name was given to a witch by the Devil indicating a rejection of Christian baptism and is a re-naming by the Devil. The explanations for the different types, was listed in the document that is downloaded with the Witchcraft Survey ^[ Goodare, Julian, Lauren Martin, Joyce Miller and Louise Yeoman, 'The Survey of Scottish Witchcraft', www.shc.ed.ac.uk/witches/  (archived January 2003, accessed December 10th, 2020).].
+There were 961 occasions of demonic pacts out of 3413 cases of witch trials.
+
+## Torture 
+
+To really understand how some of these women suffered, I will focus on the torture they were subjects to, and I will try to visualize it to make it more understandable. I started by sort and count the different types of torture like I have done with the data above: 
+
+```{r}
+Torture <- mdb.get("Witchcraftsurvey_download/Witchcraftsurvey_download.mdb", tables = "WDB_Torture")
+Torture %>%
+  count(Torturetype, sort = TRUE)
+```
+To make it into a bar chart I had to assign the number of tortures to the y-axis and the Type of torture to the x-axis. It came to look like this: 
+
+```{r}
+Torture%>%
+  count(Torturetype, sort = TRUE) %>%
+  top_n(14) %>%
+  mutate(Torturetype = reorder(Torturetype, n)) %>%
+  ggplot(aes(x = Torturetype, y = n)) +
+  geom_col() +
+  xlab(NULL) +
+  coord_flip() +
+      labs(x = "Type of Torture",
+      y = "Number of tortures",
+      title = "Torture")
+```
+
+Here the second highest score doesn´t have a specific type of torture. The blank space means that we don’t know the torture type, but we do know that there was torture. Otherwise sleep deprivation was the most common torture type. Burning of the feet was also a favored way of torture. The use of a whip and hanging the alleged witch by the thumbs. Being bound by robes or being placed in the stocks were also popular ways of getting alleged witches to confess to witchcraft. 
+
+
+```{r}
+library(ggplot2)
+library(lubridate)
+x <- parse_date_time(Torture$Torturedate, c("mY", "Y"))
+Torture$TY <- year(x)
+ggplot(Torture)
+#ggplot(geom_line(aes(group = Torture))) 
+  ggplot(Torture, aes(x= TY, y = Torturetype)) +
+geom_line() + geom_point()
+  
+```
+```{r}
+library(lubridate, warn.conflicts = FALSE)
+head(Torture$Torturedate)
+```
+
+To try to visualize what types of torture was used in different years, I have tried, with a little success, to make a ggplot2. Torture year (TY) is on the x-axis and the Torture type is on the y-axis. 
+At first there is a blank square, I do not know why this is, but I suspect the reason is that there are missing values in both Torture Year, and Torture Type. This is because even though the torture type isn’t named, it doesn’t mean that there wasn’t torture. The same with torture year. Because there are cases with torture registered, but the year of the case is not. This has made it quite difficult to make the code work, so the end result is what is in the next square.  Stocks, Sleep deprivation, burning the feet and the torture not named were torture types that were used more times over the course of the years. While the other torture types were only mentioned in certain years, hens the black dots, and not a line. 
+
+# Critical evaluation
+
+Even though this is a good dataset made by qualified people from the University of Edinburg, and it contains a plethora of information, it is still based on some very old documents. When you use documents that are more than 400 hundred years old from an area at the size of Scotland, there is bound to be some holes in the data. I think the age of the information is the reason for some of the missing data in this project and it makes it more difficult to use in a program like R. 
+
+#  Conclusions
+
+Taking a dataset with 400-hundred-year-old data can give some problems, even when the goal is to do something relatively simple such as visualization. The data shows that devil appearances were registered in about 396 cases of witch trials. Most often he was in the shape of a man but could appear in many forms. This could be the shape of an animal, a woman, a ghost or many others. A demonic pact was a way, the witches started to work with the Devil. This could be by an Anti-baptism which is the renunciation of Christian baptism which was the most common way, but having sex with the Devil, receiving a Devil’s mark or agreeing to be his servant was also ways of making a demonic pact. Torture was a way of forcing alleged witches to confess to be a witch. Sleep Deprivation was a popular way of torture, but burning the feet, whip the alleged witches or hang them by the thumbs were also some of the more used torture methods. The stocks were the torture type used for the longest amount of years, but sleep deprivation was also used for several years. The rest were to greater extent a one-year ting. 
+
+# References 
+
+Brew 
+https://brew.sh/index_da (accessed December 10th, 2020) 
+
+Goodare, Julian, Lauren Martin, Joyce Miller and Louise Yeoman, 'The Survey of Scottish Witchcraft', www.shc.ed.ac.uk/witches/  (archived January 2003, accessed December 10th, 2020). 
+ 
+Goodare, Julian. “Women and the witch-hunt in Scotland”. Social History, Oct., 1998, Vol. 23, No. 3 (Oct., 1998), pp. 288-308
+	https://www.jstor.org/stable/4286516  
+
+McKay, John P., Bennett D. Hill, and John Buckler. A history of Western society. 	Boston: Houghton Mifflin Co., 1991. 
+
+Willumsen, Liv Helene. Witches of the North: Scotland and Findmark. Leiden: Brill, 2013. 
+
+
+# Required Metadata 
+
+Because I write in Rmarkdown I cannot make a table, so I will write it as readable as possible.
+
+**Current software version:**
+ R 4.0.3., RStudio 1.3.1093. 
+
+**Permanent link to executables of this version (your Github repo URL):** 
+
+**Legal Software License** 
+
+Værket er licenseret under Creative Commons Kreditering-Ikkekommerciel 4.0 International-licensen. Se en kopi af licensen, ved at besøge http://creativecommons.org/licenses/by-nc/4.0/ eller ved at sende et brev til Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+**Computing platform / Operating System:**
+
+macOS Mojave version 10.14.6.
+
+**Installation requirements & dependencies for software not used in class:**
+
+https://brew.sh/index_da 
+
+**Support email for questions:**
+
+maja.holst@live.dk
+
+**Metadata description:**
+ 
+ file:///Users/majaprimdal/Desktop/Data/Project%20/Devil_Apperance-.html 
+
+
+
+
+
+
+
